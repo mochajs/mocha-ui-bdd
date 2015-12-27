@@ -2,7 +2,9 @@
 
 function bdd(mocha, opts) {
   const ui = mocha.createUI();
-  mocha.expose('describe', ui.createSuite);
+  ui.decorate({
+    describe: ui.createSuite
+  });
 }
 
 bdd.attributes = {

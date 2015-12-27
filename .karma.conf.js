@@ -16,10 +16,9 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'node_modules/babel-polyfill/dist/polyfill.min.js',
       'src/**/*.js',
-      'test/unit/fixture.js',
-      'test/unit/**/*.spec.js'
+      'test/e2e/fixture.js',
+      'test/e2e/**/*.spec.js'
     ],
 
     // list of files to exclude
@@ -39,9 +38,7 @@ module.exports = function (config) {
         [
           'babelify',
           {
-            presets: ['es2015'],
-            global: true,
-            ignore: /\/node_modules\/(?!joi)/
+            presets: ['es2015']
           }
         ],
         require('browserify-istanbul')

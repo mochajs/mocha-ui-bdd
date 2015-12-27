@@ -6,11 +6,11 @@
   "scripts": {
     "test": "npm run lint",
     "build": "npm run build-node",
-    "build-node": "babel --presets es2015 src --out-dir lib",
+    "build-node": "rimraf lib; babel src --out-dir lib",
     "lint": "eslint src/ test/ .*.js",
     "prepublish": "npm run build-node",
     "test-e2e": "npm run test-node-unit; npm run test-browser-e2e",
-    "test-node-e2e": "babel-node --presets es2015 node_modules/.bin/_mocha --require test/e2e/fixture.js --recursive test/e2e/",
+    "test-node-e2e": "babel-node node_modules/.bin/_mocha --require test/e2e/fixture.js --recursive test/e2e/",
     "test-browser-e2e": "karma start .karma.conf.js"
   },
   "repository": {
@@ -70,5 +70,15 @@
     "publish-please": "^1.1.0",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   }
 }
