@@ -8,10 +8,10 @@
     "build": "npm run build-node",
     "build-node": "rimraf lib; babel src --out-dir lib",
     "lint": "eslint src/ test/ .*.js",
-    "prepublish": "npm run build-node",
-    "test-e2e": "npm run test-node-unit; npm run test-browser-e2e",
+    "test-e2e": "npm run test-node-e2e && npm run test-browser-e2e",
     "test-node-e2e": "babel-node node_modules/.bin/_mocha --require test/e2e/fixture.js --recursive test/e2e/",
-    "test-browser-e2e": "karma start .karma.conf.js"
+    "test-browser-e2e": "karma start .karma.conf.js --single-run",
+    "publish-please": "publish-please"
   },
   "repository": {
     "type": "git",
