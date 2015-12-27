@@ -1,0 +1,4 @@
+{
+  "tag": "canary",
+  "prepublishScript": "npm run test && npm run build"
+}
