@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Tue Dec 08 2015 16:51:04 GMT-0800 (PST)
 
-module.exports = function (config) {
+module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -41,7 +41,14 @@ module.exports = function (config) {
             presets: ['es2015']
           }
         ],
-        require('browserify-istanbul')
+        [
+          'browserify-istanbul',
+          {
+            instrumenterConfig: {
+              embedSource: true
+            }
+          }
+        ]
       ]
     },
 
@@ -52,13 +59,15 @@ module.exports = function (config) {
       dir: 'coverage',
       reporters: [
         {
-          type: 'html'
+          type: 'html',
+          subdir: '.'
         },
         {
           type: 'text-summary'
         },
         {
-          type: 'lcov'
+          type: 'lcovonly',
+          subdir: '.'
         }
       ]
     },
@@ -84,7 +93,7 @@ module.exports = function (config) {
 
     // enable / disable watching file and executing tests whenever any file
     // changes
-    autoWatch: false,
+    autoWatch: true,
 
     // start these browsers
     // available browser launchers:
@@ -93,6 +102,6 @@ module.exports = function (config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true
+    singleRun: false
   });
 };
