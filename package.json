@@ -1,6 +1,6 @@
 {
   "name": "mocha-ui-bdd",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "BDD-style user interface for Mocha",
   "main": "lib/index.js",
   "scripts": {
