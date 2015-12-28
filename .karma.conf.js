@@ -17,8 +17,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'src/**/*.js',
-      'test/e2e/fixture.js',
-      'test/e2e/**/*.spec.js'
+      'test/e2e/**/*.js'
     ],
 
     // list of files to exclude
@@ -29,7 +28,7 @@ module.exports = function(config) {
     // https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'src/**/*.js': 'browserify',
-      'test/unit/**/*.js': 'browserify'
+      'test/e2e/**/*.js': 'browserify'
     },
 
     browserify: {
