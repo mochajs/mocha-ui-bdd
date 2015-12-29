@@ -40,7 +40,8 @@
   },
   "homepage": "https://github.com/boneskull/mocha-ui-bdd#readme",
   "files": [
-    "lib/"
+    "lib/",
+    "dist/"
   ],
   "devDependencies": {
     "babel-cli": "^6.3.13",
