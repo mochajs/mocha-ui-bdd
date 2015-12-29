@@ -4,18 +4,22 @@
   "description": "BDD-style user interface for Mocha",
   "main": "lib/index.js",
   "scripts": {
-    "build": "rimraf lib && babel src --out-dir lib",
+    "build": "npm run build:node && npm run build:browser",
+    "build:browser": "mkdirp dist && npm run build:browser:main && npm run build:browser:min",
+    "build:browser:main": "browserify --standalone mocha_ui_bdd --plugin [ bannerify --file .banner.ejs --pkg package.json ] src --outfile dist/mocha-ui-bdd.js",
+    "build:browser:min": "browserify --standalone mocha_ui_bdd --plugin [ bannerify --file .banner.ejs --pkg package.json ] --global-transform uglifyify src --outfile dist/mocha-ui-bdd.min.js",
+    "build:node": "rimraf lib && babel src --out-dir lib",
     "check": "nsp check && npm run deps",
     "deps": "npm run deps:missing && npm run deps:extra",
-    "deps:extra": "dependency-check package.json --extra --no-dev --ignore-module rimraf",
+    "deps:extra": "dependency-check package.json --extra --no-dev --ignore-module rimraf --ignore-module mkdirp",
     "deps:missing": "dependency-check package.json --missing",
     "lint": "eslint src/ test/ .*.js",
-    "prepublish": "npm run build",
+    "prepublish": "npm run check && npm run build",
     "publish-please": "publish-please",
     "test": "npm run lint",
     "test:e2e": "npm run test:e2e:node && npm run test:e2e:browser",
     "test:e2e:browser": "karma start .karma.conf.js --single-run",
-    "test:e2e:node": "babel-node node_modules/.bin/_mocha --require test/e2e/fixture.js --recursive test/e2e/"
+    "test:e2e:node": "babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha -- --require test/e2e/fixture.js --recursive test/e2e/"
   },
   "repository": {
     "type": "git",
@@ -45,8 +49,8 @@
     "babel-istanbul": "^0.5.9",
     "babel-preset-es2015": "^6.1.2",
     "babelify": "^7.2.0",
+    "bannerify": "vekat/bannerify#feature-option",
     "browserify": "^12.0.1",
-    "browserify-istanbul": "^0.2.1",
     "chai": "^3.4.0",
     "chai-as-promised": "^5.2.0",
     "dependency-check": "^2.5.1",
@@ -62,18 +66,19 @@
     "karma": "^0.13.16",
     "karma-browserify": "^4.4.2",
     "karma-cli": "^0.1.2",
-    "karma-coverage": "^0.5.3",
     "karma-mocha": "^0.2.1",
     "karma-mocha-reporter": "^1.1.3",
-    "karma-phantomjs2-launcher": "^0.4.0",
+    "karma-phantomjs-launcher": "^0.2.2",
     "mocha": "^2.3.4",
     "mocha3": "file:../mocha3",
     "nsp": "^2.2.0",
-    "phantomjs2-ext": "^0.1.0",
+    "phantomjs": "^1.9.19",
+    "phantomjs-polyfill": "0.0.1",
     "pre-commit": "^1.1.2",
     "publish-please": "^1.1.0",
     "sinon": "^1.17.2",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "uglifyify": "^3.0.1"
   },
   "browserify": {
     "transform": [
@@ -81,6 +86,7 @@
     ]
   },
   "dependencies": {
+    "mkdirp": "^0.5.1",
     "rimraf": "^2.5.0"
   }
 }
