@@ -16,6 +16,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/phantomjs-polyfill/bind-polyfill.js',
       'src/**/*.js',
       'test/e2e/**/*.js'
     ],
@@ -39,14 +40,6 @@ module.exports = function(config) {
           {
             presets: ['es2015']
           }
-        ],
-        [
-          'browserify-istanbul',
-          {
-            instrumenterConfig: {
-              embedSource: true
-            }
-          }
         ]
       ]
     },
@@ -54,29 +47,11 @@ module.exports = function(config) {
     concurrency: require('os')
       .cpus().length,
 
-    coverageReporter: {
-      dir: 'coverage',
-      reporters: [
-        {
-          type: 'html',
-          subdir: '.'
-        },
-        {
-          type: 'text-summary'
-        },
-        {
-          type: 'lcovonly',
-          subdir: '.'
-        }
-      ]
-    },
-
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: [
-      'mocha',
-      'coverage'
+      'mocha'
     ],
 
     // web server port
@@ -97,7 +72,7 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers:
     // https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS2'],
+    browsers: ['PhantomJS'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
