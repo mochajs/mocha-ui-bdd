@@ -1,7 +1,7 @@
 'use strict';
 
 const bdd = require('../../src');
-const Mocha = require('mocha3/src/mocha');
+const Mocha = require('mocha3').Mocha;
 
 describe(`bdd`, () => {
   let mocha;
