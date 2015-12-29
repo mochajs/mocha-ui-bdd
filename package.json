@@ -80,11 +80,6 @@
       "babelify"
     ]
   },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
-  },
   "dependencies": {
     "rimraf": "^2.5.0"
   }
