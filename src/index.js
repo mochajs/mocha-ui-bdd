@@ -1,9 +1,18 @@
-'use strict';
-
-function bdd(mocha, opts) {
+function bdd (mocha, opts) {
   const ui = mocha.createUI();
   ui.decorate({
-    describe: ui.createSuite
+    describe (title, func) {
+      return ui.createSuite({
+        title,
+        func
+      });
+    },
+    it (title, func) {
+      return ui.createTest({
+        title,
+        func
+      });
+    }
   });
 }
 
@@ -11,4 +20,4 @@ bdd.attributes = {
   name: 'bdd'
 };
 
-module.exports = bdd;
+export default bdd;

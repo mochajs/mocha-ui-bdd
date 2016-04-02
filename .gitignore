@@ -3,4 +3,4 @@ coverage/
 node_modules/
 lib/
 dist/
-.npmrc
+.nyc_output/

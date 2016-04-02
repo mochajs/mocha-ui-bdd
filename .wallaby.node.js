@@ -1,38 +1,47 @@
 'use strict';
 
-module.exports = function wallabyConfig(wallaby) {
+/* eslint import/no-require:0 */
+const fs = require('fs');
+const path = require('path');
+const mochaCoreBabelRc = JSON.parse(fs.readFileSync(path.join(__dirname,
+  'node_modules',
+  'mocha-core',
+  '.babelrc'), 'utf-8'));
+delete mochaCoreBabelRc.env.development.plugins;
+
+module.exports = function wallabyConfig (wallaby) {
   return {
     files: [
       'src/**/*.js',
+      'test/fixture.js',
+      'package.json',
+      'node_modules/mocha-core/src/**/*.js',
+      'node_modules/mocha-core/package.json',
       {
-        pattern: 'test/e2e/fixture.js',
+        pattern: 'lib/**/*.js',
         instrument: false
-      },
-      'package.json'
+      }
     ],
     tests: [
-      'test/e2e/**/*.spec.js'
+      'test/**/*.spec.js'
     ],
     env: {
       type: 'node',
       runner: 'node',
       params: {
-        env: 'DEBUG=mocha-ui-bdd*'
+        env: `NODE_PATH=${__dirname}/node_modules:${__dirname}/node_modules/mocha-core/node_modules`
       }
     },
     compilers: {
-      '**/*.js': wallaby.compilers.babel({
-        babel: require('babel-core'),
-        sourceMap: true,
-        presets: ['es2015']
-      })
+      'src/**/*.js': wallaby.compilers.babel(),
+      'test/**/*.js': wallaby.compilers.babel(),
+      'node_modules/mocha-core/src/**/*.js': wallaby.compilers.babel(
+        mochaCoreBabelRc)
     },
     testFramework: 'mocha',
-    debug: true,
-    bootstrap: function bootstrap(wallaby) {
-      // set NODE_PATH here once we start forking things
-      require(require('path')
-        .join(wallaby.projectCacheDir, 'test', 'e2e', 'fixture'));
-    }
+    bootstrap: wallaby => {
+      require(require('path').join(wallaby.projectCacheDir, 'test', 'fixture'));
+    },
+    debug: true
   };
 };
