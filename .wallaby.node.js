@@ -15,12 +15,7 @@ module.exports = function wallabyConfig (wallaby) {
       'src/**/*.js',
       'test/fixture.js',
       'package.json',
-      'node_modules/mocha-core/src/**/*.js',
-      'node_modules/mocha-core/package.json',
-      {
-        pattern: 'lib/**/*.js',
-        instrument: false
-      }
+      'node_modules/mocha-core/src/**/*.js'
     ],
     tests: [
       'test/**/*.spec.js'

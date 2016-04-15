@@ -1,5 +1,5 @@
 import bdd from '../../src';
-import {Mocha} from 'mocha-core/src';
+import {Mocha} from 'mocha-core';
 
 describe('bdd', () => {
   let mocha;

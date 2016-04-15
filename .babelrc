@@ -1,24 +1,41 @@
 {
   "presets": [
-    "es2015"
+    "es2015-loose"
   ],
-  "sourceMaps": "inline",
   "env": {
-    "dist": {
-      "plugins": [
-        "lodash"
-      ],
-      "sourceMaps": true
-    },
-    "jetbrains": {
-      "plugins": [
-        "rewire"
-      ],
-      "retainLines": true
-    },
     "development": {
+      "sourceMaps": "both",
       "plugins": [
         "rewire"
+      ]
+    },
+    "node": {
+      "sourceMaps": "inline",
+      "ignore": "**/*.browser.js",
+      "plugins": [
+        [
+          "transform-es2015-modules-commonjs-simple",
+          {
+            "noMangle": true,
+            "addExports": true
+          }
+        ],
+        "transform-undefined-to-void",
+        "lodash"
+      ]
+    },
+    "browser": {
+      "sourceMaps": true,
+      "plugins": [
+        [
+          "transform-es2015-modules-commonjs-simple",
+          {
+            "noMangle": true,
+            "addExports": true
+          }
+        ],
+        "transform-undefined-to-void",
+        "lodash"
       ]
     }
   }
