@@ -4,14 +4,10 @@
   ],
   "env": {
     "development": {
-      "sourceMaps": "both",
-      "plugins": [
-        "rewire"
-      ]
+      "sourceMaps": "both"
     },
     "node": {
       "sourceMaps": "inline",
-      "ignore": "**/*.browser.js",
       "plugins": [
         [
           "transform-es2015-modules-commonjs-simple",
