@@ -1,5 +1,6 @@
 import bdd from '../../src';
 import Mocha from 'mocha-core';
+import runnerSerial from 'mocha-runner-serial';
 
 describe('bdd/suite', () => {
   let mocha;
@@ -8,7 +9,8 @@ describe('bdd/suite', () => {
   beforeEach(() => {
     sandbox = sinon.sandbox.create('bdd/suite');
     mocha = Mocha({
-      ui: bdd
+      ui: bdd,
+      runner: runnerSerial
     });
   });
 
@@ -59,19 +61,19 @@ describe('bdd/suite', () => {
           let suite;
 
           beforeEach(() => {
-            suite = mocha.describe('foo', () => {
+            suite = mocha.describe('foo', spy);
               spy();
             });
           });
 
           it('should have a "passed" result', done => {
-            suite.on('did-run', suite => {
+            suite.on('did-execute', function () {
               try {
-                expect(suite)
+                expect(this)
                   .to
                   .have
                   .deep
-                  .property('result.failed', false);
+                  .property('lastResult.failed', false);
                 done();
               } catch (e) {
                 done(e);
@@ -80,7 +82,7 @@ describe('bdd/suite', () => {
           });
 
           it('should have executed', done => {
-            suite.on('did-run', () => {
+            suite.on('did-execute', function () {
               try {
                 expect(spy).to.have.been.calledOnce;
                 done();
@@ -104,13 +106,13 @@ describe('bdd/suite', () => {
           });
 
           it('should have a "passed" result', done => {
-            suite.on('did-run', suite => {
+            suite.on('did-execute', function () {
               try {
-                expect(suite)
+                expect(this)
                   .to
                   .have
                   .deep
-                  .property('result.failed', false);
+                  .property('lastResult.failed', false);
                 done();
               } catch (e) {
                 done(e);
@@ -119,7 +121,7 @@ describe('bdd/suite', () => {
           });
 
           it('should have executed', done => {
-            suite.on('did-run', () => {
+            suite.on('did-execute', function () {
               try {
                 expect(spy).to.have.been.calledOnce;
                 done();
@@ -143,13 +145,13 @@ describe('bdd/suite', () => {
           });
 
           it('should have a "passed" result', done => {
-            suite.on('did-run', suite => {
+            suite.on('did-execute', function () {
               try {
-                expect(suite)
+                expect(this)
                   .to
                   .have
                   .deep
-                  .property('result.failed', false);
+                  .property('lastResult.failed', false);
                 done();
               } catch (e) {
                 done(e);
@@ -158,7 +160,7 @@ describe('bdd/suite', () => {
           });
 
           it('should have executed', done => {
-            suite.on('did-run', () => {
+            suite.on('did-execute', function () {
               try {
                 expect(spy).to.have.been.calledOnce;
                 done();
@@ -188,13 +190,13 @@ describe('bdd/suite', () => {
           });
 
           it('should have a "failed" result', done => {
-            suite.on('did-run', suite => {
+            suite.on('did-execute', function () {
               try {
-                expect(suite)
+                expect(this)
                   .to
                   .have
                   .deep
-                  .property('result.failed', true);
+                  .property('lastResult.failed', true);
                 done();
               } catch (e) {
                 done(e);
@@ -203,7 +205,7 @@ describe('bdd/suite', () => {
           });
 
           it('should have executed', done => {
-            suite.on('did-run', () => {
+            suite.on('did-execute', function () {
               try {
                 expect(spy).to.have.been.calledOnce;
                 done();
@@ -227,13 +229,13 @@ describe('bdd/suite', () => {
           });
 
           it('should have a "failed" result', done => {
-            suite.on('did-run', suite => {
+            suite.on('did-execute', function () {
               try {
-                expect(suite)
+                expect(this)
                   .to
                   .have
                   .deep
-                  .property('result.failed', true);
+                  .property('lastResult.failed', true);
                 done();
               } catch (e) {
                 done(e);
@@ -242,7 +244,7 @@ describe('bdd/suite', () => {
           });
 
           it('should have executed', done => {
-            suite.on('did-run', () => {
+            suite.on('did-execute', function () {
               try {
                 expect(spy).to.have.been.calledOnce;
                 done();
@@ -266,13 +268,13 @@ describe('bdd/suite', () => {
           });
 
           it('should have a "failed" result', done => {
-            suite.on('did-run', suite => {
+            suite.on('did-execute', function () {
               try {
                 expect(suite)
                   .to
                   .have
                   .deep
-                  .property('result.failed', true);
+                  .property('lastResult.failed', true);
                 done();
               } catch (e) {
                 done(e);
@@ -281,7 +283,7 @@ describe('bdd/suite', () => {
           });
 
           it('should have executed', done => {
-            suite.on('did-run', () => {
+            suite.on('did-execute', () => {
               try {
                 expect(spy).to.have.been.calledOnce;
                 done();
@@ -321,8 +323,8 @@ describe('bdd/suite', () => {
       it('should execute all Suites in a depth-first fashion', done => {
         const results = [];
 
-        function takeResult (suite) {
-          results.push(suite.title);
+        function takeResult () {
+          results.push(this.title);
           if (results.length === 3) {
             try {
               expect(results)
@@ -343,11 +345,11 @@ describe('bdd/suite', () => {
           mocha.describe('bar', () => {
             mocha.describe('baz', () => {
             })
-              .on('did-run', takeResult);
+              .on('did-execute', takeResult);
           })
-            .on('did-run', takeResult);
+            .on('did-execute', takeResult);
         })
-          .on('did-run', takeResult);
+          .on('did-execute', takeResult);
       });
     });
 
@@ -368,15 +370,15 @@ describe('bdd/suite', () => {
     describe('when called with a function', () => {
       it('should not be executed', done => {
         const spy = sandbox.spy();
-        mocha.describe.skip(spy)
-          .on('skipped', () => {
-            try {
-              expect(spy).not.to.have.been.called;
-              done();
-            } catch (e) {
-              done(e);
-            }
-          });
+        mocha.once('suite:skipped', () => {
+          try {
+            expect(spy).not.to.have.been.called;
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+        mocha.describe.skip('foo', spy);
       });
     });
   });
