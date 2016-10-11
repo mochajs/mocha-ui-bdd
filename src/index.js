@@ -70,20 +70,19 @@ function bdd (mocha, opts) {
         func,
         hasCallback: hasCallback(func),
         include: true
-    'it.skip': function itSkip (title) {
       });
     },
     'it.retries': function itRetries (num) {
       return ui.retries(num);
     },
     'before': function before (func) {
-      return ui.beforeTests({
+      return ui.preSuite({
         func,
         hasCallback: hasCallback(func)
       });
     },
     'beforeEach': function beforeEach (func) {
-      return ui.beforeEachTest({
+      return ui.preTest({
         func,
         hasCallback: hasCallback(func)
       });
